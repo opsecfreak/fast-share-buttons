@@ -19,12 +19,8 @@
 defined( 'ABSPATH' ) || exit;
 
 // Updater wiring (shared drop-in, do not modify the file itself).
-define( 'MTSUAV_UPDATER_SLUG', 'mtsuav-social-share' );
-define( 'MTSUAV_UPDATER_REPO', 'opsecfreak/mtsuav-social-share' );
-define( 'MTSUAV_UPDATER_VERSION', '1.0.0' );
-define( 'MTSUAV_UPDATER_FILE', __FILE__ );
 require_once __DIR__ . '/includes/class-mtsuav-updater.php';
-MTSUAV_Updater::init();
+MTSUAV_Updater::register( 'mtsuav-social-share', 'opsecfreak/mtsuav-social-share', '1.0.0', __FILE__ );
 
 // Tip box wiring (shared drop-in, do not modify the file itself).
 require_once __DIR__ . '/includes/class-mtsuav-tip-box.php';

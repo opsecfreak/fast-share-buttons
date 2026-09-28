@@ -69,4 +69,4 @@ X, Facebook, LinkedIn, Pinterest, WhatsApp, Telegram, Reddit, Email, and Copy Li
 
 This plugin does not collect, store, or transmit any visitor data. It sets no cookies and loads no third-party resources on your site.
 
-The automatic updater makes one outbound request from your server (never from visitor browsers) to `https://api.github.com/repos/opsecfreak/mtsuav-social-share/releases/latest`, cached for 12 hours (1 hour after a failure). The request sends only a standard WordPress user-agent string; no personal data, license keys, or site identifiers are transmitted. If the request fails, the plugin simply offers no update.
+The automatic updater makes one outbound request from your server (never from visitor browsers) to `https://api.github.com/repos/opsecfreak/mtsuav-social-share/releases/latest`, cached for 12 hours (1 hour after a failure). The request sends only a generic updater user-agent (MTSUAV-Updater plus your WordPress version); no personal data, license keys, or site identifiers are transmitted. If the request fails, the plugin simply offers no update.
