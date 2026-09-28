@@ -4,12 +4,12 @@
  *
  * No external requests, no icon fonts, no CDN. Everything inline.
  *
- * @package MTSUAV_Social_Share
+ * @package FSB_Share
  */
 
 defined( 'ABSPATH' ) || exit;
 
-class MTSUAV_Share_Networks {
+class FSB_Share_Networks {
 
 	/**
 	 * All supported networks, keyed by slug.
@@ -22,55 +22,55 @@ class MTSUAV_Share_Networks {
 	public static function all() {
 		return array(
 			'x'         => array(
-				'label' => __( 'X', 'mtsuav-social-share' ),
+				'label' => __( 'X', 'fast-share-buttons' ),
 				'url'   => 'https://twitter.com/intent/tweet?url={url}&text={title}',
 				'color' => '#000000',
 				'popup' => true,
 			),
 			'facebook'  => array(
-				'label' => __( 'Facebook', 'mtsuav-social-share' ),
+				'label' => __( 'Facebook', 'fast-share-buttons' ),
 				'url'   => 'https://www.facebook.com/sharer/sharer.php?u={url}',
 				'color' => '#1877f2',
 				'popup' => true,
 			),
 			'linkedin'  => array(
-				'label' => __( 'LinkedIn', 'mtsuav-social-share' ),
+				'label' => __( 'LinkedIn', 'fast-share-buttons' ),
 				'url'   => 'https://www.linkedin.com/sharing/share-offsite/?url={url}',
 				'color' => '#0a66c2',
 				'popup' => true,
 			),
 			'pinterest' => array(
-				'label' => __( 'Pinterest', 'mtsuav-social-share' ),
+				'label' => __( 'Pinterest', 'fast-share-buttons' ),
 				'url'   => 'https://pinterest.com/pin/create/button/?url={url}&media={image}&description={title}',
 				'color' => '#e60023',
 				'popup' => true,
 			),
 			'whatsapp'  => array(
-				'label' => __( 'WhatsApp', 'mtsuav-social-share' ),
+				'label' => __( 'WhatsApp', 'fast-share-buttons' ),
 				'url'   => 'https://wa.me/?text={title_text}',
 				'color' => '#25d366',
 				'popup' => true,
 			),
 			'telegram'  => array(
-				'label' => __( 'Telegram', 'mtsuav-social-share' ),
+				'label' => __( 'Telegram', 'fast-share-buttons' ),
 				'url'   => 'https://t.me/share/url?url={url}&text={title}',
 				'color' => '#229ed9',
 				'popup' => true,
 			),
 			'reddit'    => array(
-				'label' => __( 'Reddit', 'mtsuav-social-share' ),
+				'label' => __( 'Reddit', 'fast-share-buttons' ),
 				'url'   => 'https://www.reddit.com/submit?url={url}&title={title}',
 				'color' => '#ff4500',
 				'popup' => true,
 			),
 			'email'     => array(
-				'label' => __( 'Email', 'mtsuav-social-share' ),
+				'label' => __( 'Email', 'fast-share-buttons' ),
 				'url'   => 'mailto:?subject={title}&body={desc_body}',
 				'color' => '#6b7280',
 				'popup' => false,
 			),
 			'copy'      => array(
-				'label' => __( 'Copy link', 'mtsuav-social-share' ),
+				'label' => __( 'Copy link', 'fast-share-buttons' ),
 				'url'   => '',
 				'color' => '#6b7280',
 				'popup' => false,
@@ -152,6 +152,6 @@ class MTSUAV_Share_Networks {
 			'copy'      => '<path d="M10 14a5 5 0 0 0 7.1.5l2.4-2.4a5 5 0 0 0-7.1-7.1l-1.4 1.4M14 10a5 5 0 0 0-7.1-.5l-2.4 2.4a5 5 0 0 0 7.1 7.1l1.4-1.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="10" cy="14" r="1.6"/><circle cx="14" cy="10" r="1.6"/>',
 		);
 		$path = isset( $paths[ $slug ] ) ? $paths[ $slug ] : $paths['copy'];
-		return '<svg class="mtsuav-share-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">' . $path . '</svg>';
+		return '<svg class="fast-share-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">' . $path . '</svg>';
 	}
 }

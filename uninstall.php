@@ -1,15 +1,15 @@
 <?php
 /**
- * Uninstall cleanup for MTSUAV Social Share.
+ * Uninstall cleanup for Fast Share Buttons.
  *
  * Deletes the settings option and every user's tip-box dismissal flag.
  *
- * @package MTSUAV_Social_Share
+ * @package FSB_Share
  */
 
 defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 
-delete_option( 'mtsuav_share_settings' );
+delete_option( 'fast_share_settings' );
 
 // Per-user tip-box dismissal meta (set by the shared tip-box drop-in).
-delete_metadata( 'user', 0, 'mtsuav_tip_dismissed_mtsuav-social-share', '', true );
+delete_metadata( 'user', 0, 'mtsuav_tip_dismissed_fast-share-buttons', '', true );

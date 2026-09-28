@@ -2,12 +2,12 @@
 /**
  * Frontend rendering: buttons, placements, shortcode, template function.
  *
- * @package MTSUAV_Social_Share
+ * @package FSB_Share
  */
 
 defined( 'ABSPATH' ) || exit;
 
-class MTSUAV_Share_Render {
+class FSB_Share_Render {
 
 	/**
 	 * Wire up hooks.
@@ -17,7 +17,7 @@ class MTSUAV_Share_Render {
 	public static function init() {
 		add_filter( 'the_content', array( __CLASS__, 'filter_content' ), 20 );
 		add_action( 'wp_footer', array( __CLASS__, 'render_floating_bars' ), 10 );
-		add_shortcode( 'mtsuav_share', array( __CLASS__, 'shortcode' ) );
+		add_shortcode( 'fast_share', array( __CLASS__, 'shortcode' ) );
 	}
 
 	/**
@@ -44,7 +44,7 @@ class MTSUAV_Share_Render {
 			}
 		}
 
-		$settings = mtsuav_share_get_settings();
+		$settings = fast_share_get_settings();
 		if ( ! empty( $settings['utm_enable'] ) ) {
 			$url = self::add_utm( $url, $settings );
 		}
@@ -132,11 +132,11 @@ class MTSUAV_Share_Render {
 	 * @return string HTML markup (empty string when nothing to show).
 	 */
 	public static function buttons( $args = array() ) {
-		$settings = mtsuav_share_get_settings();
+		$settings = fast_share_get_settings();
 
 		$networks = isset( $args['networks'] ) && is_array( $args['networks'] ) && ! empty( $args['networks'] )
-			? array_values( array_intersect( $args['networks'], array_keys( MTSUAV_Share_Networks::all() ) ) )
-			: MTSUAV_Share_Networks::enabled( $settings );
+			? array_values( array_intersect( $args['networks'], array_keys( FSB_Share_Networks::all() ) ) )
+			: FSB_Share_Networks::enabled( $settings );
 
 		if ( empty( $networks ) ) {
 			return '';
@@ -163,51 +163,51 @@ class MTSUAV_Share_Render {
 		$show_label = ( 'icon_label' === $icon_label );
 
 		$data = self::share_data();
-		$all  = MTSUAV_Share_Networks::all();
+		$all  = FSB_Share_Networks::all();
 
 		$classes = array(
-			'mtsuav-share',
-			'mtsuav-share--' . $shape,
-			'mtsuav-share--' . $size,
-			'mtsuav-share--' . $color_mode,
-			'mtsuav-share--' . $layout,
-			$show_label ? 'mtsuav-share--labeled' : 'mtsuav-share--icons',
+			'fast-share',
+			'fast-share--' . $shape,
+			'fast-share--' . $size,
+			'fast-share--' . $color_mode,
+			'fast-share--' . $layout,
+			$show_label ? 'fast-share--labeled' : 'fast-share--icons',
 		);
 
 		$style_attr = '';
 		if ( 'custom' === $color_mode ) {
 			$custom = isset( $args['custom_color'] ) ? $args['custom_color'] : $settings['custom_color'];
 			if ( preg_match( '/^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/', $custom ) ) {
-				$style_attr = ' style="--mtsuav-share-color:' . esc_attr( $custom ) . ';"';
+				$style_attr = ' style="--fast-share-color:' . esc_attr( $custom ) . ';"';
 			}
 		}
 
-		mtsuav_share_enqueue_frontend();
+		fast_share_enqueue_frontend();
 
-		$html = '<div class="' . esc_attr( implode( ' ', $classes ) ) . '" role="group" aria-label="' . esc_attr__( 'Share this page', 'mtsuav-social-share' ) . '"' . $style_attr . '>';
+		$html = '<div class="' . esc_attr( implode( ' ', $classes ) ) . '" role="group" aria-label="' . esc_attr__( 'Share this page', 'fast-share-buttons' ) . '"' . $style_attr . '>';
 		foreach ( $networks as $slug ) {
 			$def = $all[ $slug ];
 			if ( ! empty( $def['copy'] ) ) {
 				$html .= sprintf(
-					'<button type="button" class="mtsuav-share-btn mtsuav-share-btn--%1$s" data-mtsuav-copy="%2$s" aria-label="%3$s">%4$s%5$s<span class="mtsuav-share-feedback" aria-live="polite"></span></button>',
+					'<button type="button" class="fast-share-btn fast-share-btn--%1$s" data-fast-copy="%2$s" aria-label="%3$s">%4$s%5$s<span class="fast-share-feedback" aria-live="polite"></span></button>',
 					esc_attr( $slug ),
 					esc_attr( $data['url'] ),
 					esc_attr( $def['label'] ),
-					MTSUAV_Share_Networks::icon( $slug ),
-					$show_label ? '<span class="mtsuav-share-label">' . esc_html( $def['label'] ) . '</span>' : ''
+					FSB_Share_Networks::icon( $slug ),
+					$show_label ? '<span class="fast-share-label">' . esc_html( $def['label'] ) . '</span>' : ''
 				);
 				continue;
 			}
-			$href = MTSUAV_Share_Networks::share_url( $slug, $data['url'], $data['title'], $data['desc'], $data['image'] );
+			$href = FSB_Share_Networks::share_url( $slug, $data['url'], $data['title'], $data['desc'], $data['image'] );
 			$html .= sprintf(
-				'<a class="mtsuav-share-btn mtsuav-share-btn--%1$s" href="%2$s" target="_blank" rel="noopener"%3$s aria-label="%4$s">%5$s%6$s</a>',
+				'<a class="fast-share-btn fast-share-btn--%1$s" href="%2$s" target="_blank" rel="noopener"%3$s aria-label="%4$s">%5$s%6$s</a>',
 				esc_attr( $slug ),
 				esc_url( $href ),
-				! empty( $def['popup'] ) ? ' data-mtsuav-popup="1"' : '',
+				! empty( $def['popup'] ) ? ' data-fast-popup="1"' : '',
 				// Translators: %s is the network name, e.g. "Share on Facebook".
-				esc_attr( sprintf( __( 'Share on %s', 'mtsuav-social-share' ), $def['label'] ) ),
-				MTSUAV_Share_Networks::icon( $slug ),
-				$show_label ? '<span class="mtsuav-share-label">' . esc_html( $def['label'] ) . '</span>' : ''
+				esc_attr( sprintf( __( 'Share on %s', 'fast-share-buttons' ), $def['label'] ) ),
+				FSB_Share_Networks::icon( $slug ),
+				$show_label ? '<span class="fast-share-label">' . esc_html( $def['label'] ) . '</span>' : ''
 			);
 		}
 		$html .= '</div>';
@@ -225,7 +225,7 @@ class MTSUAV_Share_Render {
 		if ( ! in_the_loop() || ! is_main_query() ) {
 			return $content;
 		}
-		$settings   = mtsuav_share_get_settings();
+		$settings   = fast_share_get_settings();
 		$placements = isset( $settings['placements'] ) && is_array( $settings['placements'] ) ? $settings['placements'] : array();
 		if ( empty( $placements ) || ! self::can_auto_display( $settings ) ) {
 			return $content;
@@ -254,7 +254,7 @@ class MTSUAV_Share_Render {
 	 * @return void
 	 */
 	public static function render_floating_bars() {
-		$settings   = mtsuav_share_get_settings();
+		$settings   = fast_share_get_settings();
 		$placements = isset( $settings['placements'] ) && is_array( $settings['placements'] ) ? $settings['placements'] : array();
 		if ( empty( $placements ) || ! self::can_auto_display( $settings ) ) {
 			return;
@@ -274,7 +274,7 @@ class MTSUAV_Share_Render {
 	}
 
 	/**
-	 * Shortcode [mtsuav_share].
+	 * Shortcode [fast_share].
 	 *
 	 * Attributes: networks (comma list), shape, size, color_mode, custom_color,
 	 * icon_label (icon_only|icon_label), layout.
@@ -294,7 +294,7 @@ class MTSUAV_Share_Render {
 				'layout'       => 'inline',
 			),
 			$atts,
-			'mtsuav_share'
+			'fast_share'
 		);
 
 		$args = array();
@@ -313,12 +313,12 @@ class MTSUAV_Share_Render {
 /**
  * Template function: echo or return the share buttons.
  *
- * @param array $args  Optional overrides (same keys as MTSUAV_Share_Render::buttons()).
+ * @param array $args  Optional overrides (same keys as FSB_Share_Render::buttons()).
  * @param bool  $echo  Echo the markup (true) or return it (false).
  * @return string|void
  */
-function mtsuav_share_buttons( $args = array(), $echo = true ) {
-	$html = MTSUAV_Share_Render::buttons( $args );
+function fast_share_buttons( $args = array(), $echo = true ) {
+	$html = FSB_Share_Render::buttons( $args );
 	if ( $echo ) {
 		echo $html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in buttons().
 		return;

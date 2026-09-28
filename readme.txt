@@ -1,6 +1,6 @@
-=== MTSUAV Social Share ===
+=== Fast Share Buttons ===
 Contributors: mobiletechspecialists
-Tags: social share, share buttons, social media, open graph
+Tags: social share, share buttons, social media, open graph, privacy
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 8.0
@@ -12,7 +12,7 @@ Lightweight social share buttons for X, Facebook, LinkedIn, Pinterest, WhatsApp,
 
 == Description ==
 
-MTSUAV Social Share adds fast, privacy-friendly share buttons to your WordPress site. Everything is rendered locally: inline SVG icons, no icon fonts, no CDN scripts, no tracking pixels.
+Fast Share Buttons adds fast, privacy-friendly share buttons to your WordPress site. Everything is rendered locally: inline SVG icons, no icon fonts, no CDN scripts, no tracking pixels.
 
 Features:
 
@@ -24,17 +24,17 @@ Features:
 * UTM builder: automatically append utm_source, utm_medium, and utm_campaign to shared URLs
 * Open Graph and Twitter Card tags on posts and pages, with a fallback image picker
 * Copy Link button with clipboard support and "Copied!" feedback
-* Shortcode `[mtsuav_share]` with style overrides, plus the `mtsuav_share_buttons()` template tag
+* Shortcode `[fast_share]` with style overrides, plus the `fast_share_buttons()` template tag
 * Accessible: aria-labels on every button, keyboard-focus styles, reduced-motion support
 * Automatic updates from the public GitHub repository
 
 == Installation ==
 
-1. Upload the `mtsuav-social-share` folder to `/wp-content/plugins/` or install the zip through Plugins > Add New > Upload Plugin.
+1. Upload the `fast-share-buttons` folder to `/wp-content/plugins/` or install the zip through Plugins > Add New > Upload Plugin.
 2. Activate the plugin through the Plugins menu in WordPress.
 3. Go to Settings > Social Share to choose networks, placement, and appearance.
 
-To place buttons manually, add the shortcode `[mtsuav_share]` to any post or page, or call `<?php mtsuav_share_buttons(); ?>` in your theme.
+To place buttons manually, add the shortcode `[fast_share]` to any post or page, or call `<?php fast_share_buttons(); ?>` in your theme.
 
 == Frequently Asked Questions ==
 
@@ -69,4 +69,4 @@ X, Facebook, LinkedIn, Pinterest, WhatsApp, Telegram, Reddit, Email, and Copy Li
 
 This plugin does not collect, store, or transmit any visitor data. It sets no cookies and loads no third-party resources on your site.
 
-The automatic updater makes one outbound request from your server (never from visitor browsers) to `https://api.github.com/repos/opsecfreak/mtsuav-social-share/releases/latest`, cached for 12 hours (1 hour after a failure). The request sends only a generic updater user-agent (MTSUAV-Updater plus your WordPress version); no personal data, license keys, or site identifiers are transmitted. If the request fails, the plugin simply offers no update.
+The automatic updater makes one outbound request from your server (never from visitor browsers) to `https://api.github.com/repos/opsecfreak/fast-share-buttons/releases/latest`, cached for 12 hours (1 hour after a failure). The request sends only a generic updater user-agent (MTSUAV-Updater plus your WordPress version); no personal data, license keys, or site identifiers are transmitted. If the request fails, the plugin simply offers no update.

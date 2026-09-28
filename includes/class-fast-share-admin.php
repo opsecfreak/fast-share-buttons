@@ -2,17 +2,17 @@
 /**
  * Settings page under the Settings menu, built on the Settings API.
  *
- * Single option array: mtsuav_share_settings. Full sanitization.
+ * Single option array: fast_share_settings. Full sanitization.
  *
- * @package MTSUAV_Social_Share
+ * @package FSB_Share
  */
 
 defined( 'ABSPATH' ) || exit;
 
-class MTSUAV_Share_Admin {
+class FSB_Share_Admin {
 
-	const PAGE_SLUG = 'mtsuav-social-share';
-	const OPTION_GROUP = 'mtsuav_share_options';
+	const PAGE_SLUG = 'fast-share-buttons';
+	const OPTION_GROUP = 'fast_share_options';
 
 	/**
 	 * Wire up hooks.
@@ -32,8 +32,8 @@ class MTSUAV_Share_Admin {
 	 */
 	public static function add_menu() {
 		add_options_page(
-			__( 'MTSUAV Social Share', 'mtsuav-social-share' ),
-			__( 'Social Share', 'mtsuav-social-share' ),
+			__( 'Fast Share Buttons', 'fast-share-buttons' ),
+			__( 'Social Share', 'fast-share-buttons' ),
 			'manage_options',
 			self::PAGE_SLUG,
 			array( __CLASS__, 'render_page' )
@@ -50,8 +50,8 @@ class MTSUAV_Share_Admin {
 		if ( 'settings_page_' . self::PAGE_SLUG !== $hook ) {
 			return;
 		}
-		wp_enqueue_style( 'mtsuav-share-admin' );
-		wp_enqueue_script( 'mtsuav-share-admin' );
+		wp_enqueue_style( 'fast-share-admin' );
+		wp_enqueue_script( 'fast-share-admin' );
 		wp_enqueue_media();
 	}
 
@@ -63,54 +63,54 @@ class MTSUAV_Share_Admin {
 	public static function register_settings() {
 		register_setting(
 			self::OPTION_GROUP,
-			MTSUAV_SHARE_OPTION,
+			FAST_SHARE_OPTION,
 			array( 'sanitize_callback' => array( __CLASS__, 'sanitize' ) )
 		);
 
 		add_settings_section(
-			'mtsuav_share_section_networks',
-			__( 'Networks', 'mtsuav-social-share' ),
+			'fast_share_section_networks',
+			__( 'Networks', 'fast-share-buttons' ),
 			array( __CLASS__, 'section_networks_desc' ),
 			self::PAGE_SLUG
 		);
 		add_settings_field(
-			'mtsuav_share_networks',
-			__( 'Share networks', 'mtsuav-social-share' ),
+			'fast_share_networks',
+			__( 'Share networks', 'fast-share-buttons' ),
 			array( __CLASS__, 'field_networks' ),
 			self::PAGE_SLUG,
-			'mtsuav_share_section_networks'
+			'fast_share_section_networks'
 		);
 
 		add_settings_section(
-			'mtsuav_share_section_appearance',
-			__( 'Placement and appearance', 'mtsuav-social-share' ),
+			'fast_share_section_appearance',
+			__( 'Placement and appearance', 'fast-share-buttons' ),
 			null,
 			self::PAGE_SLUG
 		);
-		add_settings_field( 'mtsuav_share_placements', __( 'Placements', 'mtsuav-social-share' ), array( __CLASS__, 'field_placements' ), self::PAGE_SLUG, 'mtsuav_share_section_appearance' );
-		add_settings_field( 'mtsuav_share_shape', __( 'Button shape', 'mtsuav-social-share' ), array( __CLASS__, 'field_shape' ), self::PAGE_SLUG, 'mtsuav_share_section_appearance' );
-		add_settings_field( 'mtsuav_share_size', __( 'Button size', 'mtsuav-social-share' ), array( __CLASS__, 'field_size' ), self::PAGE_SLUG, 'mtsuav_share_section_appearance' );
-		add_settings_field( 'mtsuav_share_color', __( 'Colors', 'mtsuav-social-share' ), array( __CLASS__, 'field_color' ), self::PAGE_SLUG, 'mtsuav_share_section_appearance' );
-		add_settings_field( 'mtsuav_share_labels', __( 'Labels', 'mtsuav-social-share' ), array( __CLASS__, 'field_labels' ), self::PAGE_SLUG, 'mtsuav_share_section_appearance' );
+		add_settings_field( 'fast_share_placements', __( 'Placements', 'fast-share-buttons' ), array( __CLASS__, 'field_placements' ), self::PAGE_SLUG, 'fast_share_section_appearance' );
+		add_settings_field( 'fast_share_shape', __( 'Button shape', 'fast-share-buttons' ), array( __CLASS__, 'field_shape' ), self::PAGE_SLUG, 'fast_share_section_appearance' );
+		add_settings_field( 'fast_share_size', __( 'Button size', 'fast-share-buttons' ), array( __CLASS__, 'field_size' ), self::PAGE_SLUG, 'fast_share_section_appearance' );
+		add_settings_field( 'fast_share_color', __( 'Colors', 'fast-share-buttons' ), array( __CLASS__, 'field_color' ), self::PAGE_SLUG, 'fast_share_section_appearance' );
+		add_settings_field( 'fast_share_labels', __( 'Labels', 'fast-share-buttons' ), array( __CLASS__, 'field_labels' ), self::PAGE_SLUG, 'fast_share_section_appearance' );
 
 		add_settings_section(
-			'mtsuav_share_section_display',
-			__( 'Display rules', 'mtsuav-social-share' ),
+			'fast_share_section_display',
+			__( 'Display rules', 'fast-share-buttons' ),
 			null,
 			self::PAGE_SLUG
 		);
-		add_settings_field( 'mtsuav_share_post_types', __( 'Post types', 'mtsuav-social-share' ), array( __CLASS__, 'field_post_types' ), self::PAGE_SLUG, 'mtsuav_share_section_display' );
-		add_settings_field( 'mtsuav_share_home', __( 'Homepage and archives', 'mtsuav-social-share' ), array( __CLASS__, 'field_home_archives' ), self::PAGE_SLUG, 'mtsuav_share_section_display' );
-		add_settings_field( 'mtsuav_share_exclude', __( 'Excluded post IDs', 'mtsuav-social-share' ), array( __CLASS__, 'field_exclude' ), self::PAGE_SLUG, 'mtsuav_share_section_display' );
+		add_settings_field( 'fast_share_post_types', __( 'Post types', 'fast-share-buttons' ), array( __CLASS__, 'field_post_types' ), self::PAGE_SLUG, 'fast_share_section_display' );
+		add_settings_field( 'fast_share_home', __( 'Homepage and archives', 'fast-share-buttons' ), array( __CLASS__, 'field_home_archives' ), self::PAGE_SLUG, 'fast_share_section_display' );
+		add_settings_field( 'fast_share_exclude', __( 'Excluded post IDs', 'fast-share-buttons' ), array( __CLASS__, 'field_exclude' ), self::PAGE_SLUG, 'fast_share_section_display' );
 
 		add_settings_section(
-			'mtsuav_share_section_sharing',
-			__( 'Sharing and SEO', 'mtsuav-social-share' ),
+			'fast_share_section_sharing',
+			__( 'Sharing and SEO', 'fast-share-buttons' ),
 			null,
 			self::PAGE_SLUG
 		);
-		add_settings_field( 'mtsuav_share_utm', __( 'UTM tracking', 'mtsuav-social-share' ), array( __CLASS__, 'field_utm' ), self::PAGE_SLUG, 'mtsuav_share_section_sharing' );
-		add_settings_field( 'mtsuav_share_og', __( 'Open Graph tags', 'mtsuav-social-share' ), array( __CLASS__, 'field_og' ), self::PAGE_SLUG, 'mtsuav_share_section_sharing' );
+		add_settings_field( 'fast_share_utm', __( 'UTM tracking', 'fast-share-buttons' ), array( __CLASS__, 'field_utm' ), self::PAGE_SLUG, 'fast_share_section_sharing' );
+		add_settings_field( 'fast_share_og', __( 'Open Graph tags', 'fast-share-buttons' ), array( __CLASS__, 'field_og' ), self::PAGE_SLUG, 'fast_share_section_sharing' );
 	}
 
 	/**
@@ -120,11 +120,11 @@ class MTSUAV_Share_Admin {
 	 * @return array
 	 */
 	public static function sanitize( $input ) {
-		$defaults = mtsuav_share_defaults();
+		$defaults = fast_share_defaults();
 		$input    = is_array( $input ) ? $input : array();
 		$out      = $defaults;
 
-		$network_slugs = array_keys( MTSUAV_Share_Networks::all() );
+		$network_slugs = array_keys( FSB_Share_Networks::all() );
 
 		// Network toggles.
 		$networks = array();
@@ -225,14 +225,14 @@ class MTSUAV_Share_Admin {
 	 */
 	public static function render_page() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You do not have permission to access this page.', 'mtsuav-social-share' ) );
+			wp_die( esc_html__( 'You do not have permission to access this page.', 'fast-share-buttons' ) );
 		}
 		?>
 		<div class="wrap">
-			<h1><?php esc_html_e( 'MTSUAV Social Share', 'mtsuav-social-share' ); ?></h1>
+			<h1><?php esc_html_e( 'Fast Share Buttons', 'fast-share-buttons' ); ?></h1>
 			<?php
 			if ( function_exists( 'mtsuav_tip_box' ) ) {
-				mtsuav_tip_box( 'mtsuav-social-share', 'MTSUAV Social Share' );
+				mtsuav_tip_box( 'fast-share-buttons', 'Fast Share Buttons' );
 			}
 			?>
 			<form method="post" action="options.php">
@@ -242,18 +242,18 @@ class MTSUAV_Share_Admin {
 				submit_button();
 				?>
 			</form>
-			<h2><?php esc_html_e( 'Shortcode and template tag', 'mtsuav-social-share' ); ?></h2>
+			<h2><?php esc_html_e( 'Shortcode and template tag', 'fast-share-buttons' ); ?></h2>
 			<p>
-				<?php esc_html_e( 'Place share buttons anywhere with the shortcode:', 'mtsuav-social-share' ); ?>
-				<code>[mtsuav_share]</code>
+				<?php esc_html_e( 'Place share buttons anywhere with the shortcode:', 'fast-share-buttons' ); ?>
+				<code>[fast_share]</code>
 			</p>
 			<p>
-				<?php esc_html_e( 'Limit networks or override the style, for example:', 'mtsuav-social-share' ); ?>
-				<code>[mtsuav_share networks="x,facebook,linkedin" shape="pill" size="large"]</code>
+				<?php esc_html_e( 'Limit networks or override the style, for example:', 'fast-share-buttons' ); ?>
+				<code>[fast_share networks="x,facebook,linkedin" shape="pill" size="large"]</code>
 			</p>
 			<p>
-				<?php esc_html_e( 'In a theme template:', 'mtsuav-social-share' ); ?>
-				<code>&lt;?php mtsuav_share_buttons(); ?&gt;</code>
+				<?php esc_html_e( 'In a theme template:', 'fast-share-buttons' ); ?>
+				<code>&lt;?php fast_share_buttons(); ?&gt;</code>
 			</p>
 		</div>
 		<?php
@@ -265,7 +265,7 @@ class MTSUAV_Share_Admin {
 	 * @return void
 	 */
 	public static function section_networks_desc() {
-		echo '<p>' . esc_html__( 'Choose which networks appear, and drag to reorder them.', 'mtsuav-social-share' ) . '</p>';
+		echo '<p>' . esc_html__( 'Choose which networks appear, and drag to reorder them.', 'fast-share-buttons' ) . '</p>';
 	}
 
 	/**
@@ -274,13 +274,13 @@ class MTSUAV_Share_Admin {
 	 * @return void
 	 */
 	public static function field_networks() {
-		$settings = mtsuav_share_get_settings();
-		$all      = MTSUAV_Share_Networks::all();
+		$settings = fast_share_get_settings();
+		$all      = FSB_Share_Networks::all();
 		$order    = isset( $settings['network_order'] ) && is_array( $settings['network_order'] )
 			? $settings['network_order'] : array_keys( $all );
 		$flags    = isset( $settings['networks'] ) && is_array( $settings['networks'] ) ? $settings['networks'] : array();
 		?>
-		<ul id="mtsuav-share-network-list" class="mtsuav-share-sortable">
+		<ul id="fast-share-network-list" class="fast-share-sortable">
 			<?php foreach ( $order as $slug ) : ?>
 				<?php
 				if ( ! isset( $all[ $slug ] ) ) {
@@ -288,17 +288,17 @@ class MTSUAV_Share_Admin {
 				}
 				$checked = ! empty( $flags[ $slug ] );
 				?>
-				<li class="mtsuav-share-network-item" data-slug="<?php echo esc_attr( $slug ); ?>">
-					<span class="dashicons dashicons-menu mtsuav-share-drag" aria-hidden="true"></span>
+				<li class="fast-share-network-item" data-slug="<?php echo esc_attr( $slug ); ?>">
+					<span class="dashicons dashicons-menu fast-share-drag" aria-hidden="true"></span>
 					<label>
-						<input type="checkbox" name="<?php echo esc_attr( MTSUAV_SHARE_OPTION ); ?>[networks][<?php echo esc_attr( $slug ); ?>]" value="1" <?php checked( $checked ); ?> />
+						<input type="checkbox" name="<?php echo esc_attr( FAST_SHARE_OPTION ); ?>[networks][<?php echo esc_attr( $slug ); ?>]" value="1" <?php checked( $checked ); ?> />
 						<?php echo esc_html( $all[ $slug ]['label'] ); ?>
 					</label>
 				</li>
 			<?php endforeach; ?>
 		</ul>
-		<input type="hidden" id="mtsuav-share-network-order" name="<?php echo esc_attr( MTSUAV_SHARE_OPTION ); ?>[network_order]" value="<?php echo esc_attr( implode( ',', $order ) ); ?>" />
-		<p class="description"><?php esc_html_e( 'Drag rows to change the button order. Unchecked networks are hidden.', 'mtsuav-social-share' ); ?></p>
+		<input type="hidden" id="fast-share-network-order" name="<?php echo esc_attr( FAST_SHARE_OPTION ); ?>[network_order]" value="<?php echo esc_attr( implode( ',', $order ) ); ?>" />
+		<p class="description"><?php esc_html_e( 'Drag rows to change the button order. Unchecked networks are hidden.', 'fast-share-buttons' ); ?></p>
 		<?php
 	}
 
@@ -308,25 +308,25 @@ class MTSUAV_Share_Admin {
 	 * @return void
 	 */
 	public static function field_placements() {
-		$settings   = mtsuav_share_get_settings();
+		$settings   = fast_share_get_settings();
 		$placements = isset( $settings['placements'] ) && is_array( $settings['placements'] ) ? $settings['placements'] : array();
 		$options    = array(
-			'before'          => __( 'Before content', 'mtsuav-social-share' ),
-			'after'           => __( 'After content', 'mtsuav-social-share' ),
-			'both'            => __( 'Before and after content', 'mtsuav-social-share' ),
-			'floating_side'   => __( 'Floating side bar (desktop)', 'mtsuav-social-share' ),
-			'floating_bottom' => __( 'Floating bottom bar (mobile)', 'mtsuav-social-share' ),
+			'before'          => __( 'Before content', 'fast-share-buttons' ),
+			'after'           => __( 'After content', 'fast-share-buttons' ),
+			'both'            => __( 'Before and after content', 'fast-share-buttons' ),
+			'floating_side'   => __( 'Floating side bar (desktop)', 'fast-share-buttons' ),
+			'floating_bottom' => __( 'Floating bottom bar (mobile)', 'fast-share-buttons' ),
 		);
 		foreach ( $options as $value => $label ) {
 			printf(
 				'<label style="display:block;margin-bottom:6px;"><input type="checkbox" name="%1$s[placements][]" value="%2$s" %3$s /> %4$s</label>',
-				esc_attr( MTSUAV_SHARE_OPTION ),
+				esc_attr( FAST_SHARE_OPTION ),
 				esc_attr( $value ),
 				checked( in_array( $value, $placements, true ), true, false ),
 				esc_html( $label )
 			);
 		}
-		echo '<p class="description">' . esc_html__( 'Leave all unchecked to disable automatic placement and use the shortcode or template tag only.', 'mtsuav-social-share' ) . '</p>';
+		echo '<p class="description">' . esc_html__( 'Leave all unchecked to disable automatic placement and use the shortcode or template tag only.', 'fast-share-buttons' ) . '</p>';
 	}
 
 	/**
@@ -338,10 +338,10 @@ class MTSUAV_Share_Admin {
 		self::radio_field(
 			'shape',
 			array(
-				'rounded' => __( 'Rounded', 'mtsuav-social-share' ),
-				'pill'    => __( 'Pill', 'mtsuav-social-share' ),
-				'square'  => __( 'Square', 'mtsuav-social-share' ),
-				'circle'  => __( 'Circle (icon only)', 'mtsuav-social-share' ),
+				'rounded' => __( 'Rounded', 'fast-share-buttons' ),
+				'pill'    => __( 'Pill', 'fast-share-buttons' ),
+				'square'  => __( 'Square', 'fast-share-buttons' ),
+				'circle'  => __( 'Circle (icon only)', 'fast-share-buttons' ),
 			)
 		);
 	}
@@ -355,9 +355,9 @@ class MTSUAV_Share_Admin {
 		self::radio_field(
 			'size',
 			array(
-				'small'  => __( 'Small', 'mtsuav-social-share' ),
-				'medium' => __( 'Medium', 'mtsuav-social-share' ),
-				'large'  => __( 'Large', 'mtsuav-social-share' ),
+				'small'  => __( 'Small', 'fast-share-buttons' ),
+				'medium' => __( 'Medium', 'fast-share-buttons' ),
+				'large'  => __( 'Large', 'fast-share-buttons' ),
 			)
 		);
 	}
@@ -368,19 +368,19 @@ class MTSUAV_Share_Admin {
 	 * @return void
 	 */
 	public static function field_color() {
-		$settings = mtsuav_share_get_settings();
+		$settings = fast_share_get_settings();
 		self::radio_field(
 			'color_mode',
 			array(
-				'brand'  => __( 'Brand colors', 'mtsuav-social-share' ),
-				'mono'   => __( 'Monochrome', 'mtsuav-social-share' ),
-				'custom' => __( 'Custom color', 'mtsuav-social-share' ),
+				'brand'  => __( 'Brand colors', 'fast-share-buttons' ),
+				'mono'   => __( 'Monochrome', 'fast-share-buttons' ),
+				'custom' => __( 'Custom color', 'fast-share-buttons' ),
 			)
 		);
 		printf(
 			'<p><label>%1$s <input type="color" name="%2$s[custom_color]" value="%3$s" /></label></p>',
-			esc_html__( 'Custom color:', 'mtsuav-social-share' ),
-			esc_attr( MTSUAV_SHARE_OPTION ),
+			esc_html__( 'Custom color:', 'fast-share-buttons' ),
+			esc_attr( FAST_SHARE_OPTION ),
 			esc_attr( $settings['custom_color'] )
 		);
 	}
@@ -394,8 +394,8 @@ class MTSUAV_Share_Admin {
 		self::radio_field(
 			'icon_label',
 			array(
-				'icon_label' => __( 'Icon and label', 'mtsuav-social-share' ),
-				'icon_only'  => __( 'Icon only', 'mtsuav-social-share' ),
+				'icon_label' => __( 'Icon and label', 'fast-share-buttons' ),
+				'icon_only'  => __( 'Icon only', 'fast-share-buttons' ),
 			)
 		);
 	}
@@ -408,12 +408,12 @@ class MTSUAV_Share_Admin {
 	 * @return void
 	 */
 	protected static function radio_field( $key, $options ) {
-		$settings = mtsuav_share_get_settings();
+		$settings = fast_share_get_settings();
 		$current  = isset( $settings[ $key ] ) ? $settings[ $key ] : '';
 		foreach ( $options as $value => $label ) {
 			printf(
 				'<label style="display:block;margin-bottom:6px;"><input type="radio" name="%1$s[%2$s]" value="%3$s" %4$s /> %5$s</label>',
-				esc_attr( MTSUAV_SHARE_OPTION ),
+				esc_attr( FAST_SHARE_OPTION ),
 				esc_attr( $key ),
 				esc_attr( $value ),
 				checked( $value, $current, false ),
@@ -428,13 +428,13 @@ class MTSUAV_Share_Admin {
 	 * @return void
 	 */
 	public static function field_post_types() {
-		$settings = mtsuav_share_get_settings();
+		$settings = fast_share_get_settings();
 		$selected = isset( $settings['post_types'] ) && is_array( $settings['post_types'] ) ? $settings['post_types'] : array();
 		$types    = get_post_types( array( 'public' => true ), 'objects' );
 		foreach ( $types as $type ) {
 			printf(
 				'<label style="display:block;margin-bottom:6px;"><input type="checkbox" name="%1$s[post_types][]" value="%2$s" %3$s /> %4$s</label>',
-				esc_attr( MTSUAV_SHARE_OPTION ),
+				esc_attr( FAST_SHARE_OPTION ),
 				esc_attr( $type->name ),
 				checked( in_array( $type->name, $selected, true ), true, false ),
 				esc_html( $type->labels->singular_name )
@@ -448,18 +448,18 @@ class MTSUAV_Share_Admin {
 	 * @return void
 	 */
 	public static function field_home_archives() {
-		$settings = mtsuav_share_get_settings();
+		$settings = fast_share_get_settings();
 		printf(
 			'<label style="display:block;margin-bottom:6px;"><input type="checkbox" name="%1$s[show_home]" value="1" %2$s /> %3$s</label>',
-			esc_attr( MTSUAV_SHARE_OPTION ),
+			esc_attr( FAST_SHARE_OPTION ),
 			checked( ! empty( $settings['show_home'] ), true, false ),
-			esc_html__( 'Show on the blog homepage', 'mtsuav-social-share' )
+			esc_html__( 'Show on the blog homepage', 'fast-share-buttons' )
 		);
 		printf(
 			'<label style="display:block;margin-bottom:6px;"><input type="checkbox" name="%1$s[show_archives]" value="1" %2$s /> %3$s</label>',
-			esc_attr( MTSUAV_SHARE_OPTION ),
+			esc_attr( FAST_SHARE_OPTION ),
 			checked( ! empty( $settings['show_archives'] ), true, false ),
-			esc_html__( 'Show on archive pages', 'mtsuav-social-share' )
+			esc_html__( 'Show on archive pages', 'fast-share-buttons' )
 		);
 	}
 
@@ -469,14 +469,14 @@ class MTSUAV_Share_Admin {
 	 * @return void
 	 */
 	public static function field_exclude() {
-		$settings = mtsuav_share_get_settings();
+		$settings = fast_share_get_settings();
 		printf(
 			'<input type="text" class="regular-text" name="%1$s[exclude_ids]" value="%2$s" placeholder="%3$s" />',
-			esc_attr( MTSUAV_SHARE_OPTION ),
+			esc_attr( FAST_SHARE_OPTION ),
 			esc_attr( $settings['exclude_ids'] ),
-			esc_attr__( 'e.g. 12, 34, 56', 'mtsuav-social-share' )
+			esc_attr__( 'e.g. 12, 34, 56', 'fast-share-buttons' )
 		);
-		echo '<p class="description">' . esc_html__( 'Comma-separated post or page IDs where buttons never appear.', 'mtsuav-social-share' ) . '</p>';
+		echo '<p class="description">' . esc_html__( 'Comma-separated post or page IDs where buttons never appear.', 'fast-share-buttons' ) . '</p>';
 	}
 
 	/**
@@ -485,22 +485,22 @@ class MTSUAV_Share_Admin {
 	 * @return void
 	 */
 	public static function field_utm() {
-		$settings = mtsuav_share_get_settings();
+		$settings = fast_share_get_settings();
 		printf(
 			'<label style="display:block;margin-bottom:10px;"><input type="checkbox" name="%1$s[utm_enable]" value="1" %2$s /> %3$s</label>',
-			esc_attr( MTSUAV_SHARE_OPTION ),
+			esc_attr( FAST_SHARE_OPTION ),
 			checked( ! empty( $settings['utm_enable'] ), true, false ),
-			esc_html__( 'Append UTM parameters to shared URLs', 'mtsuav-social-share' )
+			esc_html__( 'Append UTM parameters to shared URLs', 'fast-share-buttons' )
 		);
 		foreach ( array(
-			'utm_source'   => __( 'UTM source', 'mtsuav-social-share' ),
-			'utm_medium'   => __( 'UTM medium', 'mtsuav-social-share' ),
-			'utm_campaign' => __( 'UTM campaign', 'mtsuav-social-share' ),
+			'utm_source'   => __( 'UTM source', 'fast-share-buttons' ),
+			'utm_medium'   => __( 'UTM medium', 'fast-share-buttons' ),
+			'utm_campaign' => __( 'UTM campaign', 'fast-share-buttons' ),
 		) as $key => $label ) {
 			printf(
 				'<p><label>%1$s<br /><input type="text" class="regular-text" name="%2$s[%3$s]" value="%4$s" /></label></p>',
 				esc_html( $label ),
-				esc_attr( MTSUAV_SHARE_OPTION ),
+				esc_attr( FAST_SHARE_OPTION ),
 				esc_attr( $key ),
 				esc_attr( $settings[ $key ] )
 			);
@@ -513,23 +513,23 @@ class MTSUAV_Share_Admin {
 	 * @return void
 	 */
 	public static function field_og() {
-		$settings = mtsuav_share_get_settings();
+		$settings = fast_share_get_settings();
 		printf(
 			'<label style="display:block;margin-bottom:10px;"><input type="checkbox" name="%1$s[og_enable]" value="1" %2$s /> %3$s</label>',
-			esc_attr( MTSUAV_SHARE_OPTION ),
+			esc_attr( FAST_SHARE_OPTION ),
 			checked( ! empty( $settings['og_enable'] ), true, false ),
-			esc_html__( 'Output Open Graph and Twitter Card tags on posts and pages', 'mtsuav-social-share' )
+			esc_html__( 'Output Open Graph and Twitter Card tags on posts and pages', 'fast-share-buttons' )
 		);
 		$image_id  = (int) $settings['og_image'];
 		$image_url = $image_id ? wp_get_attachment_image_url( $image_id, 'medium' ) : '';
 		?>
 		<p>
-			<label><?php esc_html_e( 'Fallback image (used when a post has no featured image):', 'mtsuav-social-share' ); ?></label><br />
-			<input type="hidden" id="mtsuav-share-og-image" name="<?php echo esc_attr( MTSUAV_SHARE_OPTION ); ?>[og_image]" value="<?php echo esc_attr( $image_id ); ?>" />
-			<img id="mtsuav-share-og-preview" src="<?php echo esc_url( $image_url ); ?>" alt="" style="max-width:200px;display:<?php echo $image_url ? 'block' : 'none'; ?>;margin:8px 0;" />
+			<label><?php esc_html_e( 'Fallback image (used when a post has no featured image):', 'fast-share-buttons' ); ?></label><br />
+			<input type="hidden" id="fast-share-og-image" name="<?php echo esc_attr( FAST_SHARE_OPTION ); ?>[og_image]" value="<?php echo esc_attr( $image_id ); ?>" />
+			<img id="fast-share-og-preview" src="<?php echo esc_url( $image_url ); ?>" alt="" style="max-width:200px;display:<?php echo $image_url ? 'block' : 'none'; ?>;margin:8px 0;" />
 			<br />
-			<button type="button" class="button" id="mtsuav-share-og-select"><?php esc_html_e( 'Choose image', 'mtsuav-social-share' ); ?></button>
-			<button type="button" class="button" id="mtsuav-share-og-remove"><?php esc_html_e( 'Remove', 'mtsuav-social-share' ); ?></button>
+			<button type="button" class="button" id="fast-share-og-select"><?php esc_html_e( 'Choose image', 'fast-share-buttons' ); ?></button>
+			<button type="button" class="button" id="fast-share-og-remove"><?php esc_html_e( 'Remove', 'fast-share-buttons' ); ?></button>
 		</p>
 		<?php
 	}

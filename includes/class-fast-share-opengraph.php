@@ -2,12 +2,12 @@
 /**
  * Open Graph and Twitter Card tags on singular views.
  *
- * @package MTSUAV_Social_Share
+ * @package FSB_Share
  */
 
 defined( 'ABSPATH' ) || exit;
 
-class MTSUAV_Share_OpenGraph {
+class FSB_Share_OpenGraph {
 
 	/**
 	 * Wire up hooks.
@@ -24,7 +24,7 @@ class MTSUAV_Share_OpenGraph {
 	 * @return void
 	 */
 	public static function output_tags() {
-		$settings = mtsuav_share_get_settings();
+		$settings = fast_share_get_settings();
 		if ( empty( $settings['og_enable'] ) ) {
 			return;
 		}
@@ -36,7 +36,7 @@ class MTSUAV_Share_OpenGraph {
 			return;
 		}
 
-		$data  = MTSUAV_Share_Render::share_data();
+		$data  = FSB_Share_Render::share_data();
 		$image = $data['image'];
 		if ( '' === $image && ! empty( $settings['og_image'] ) ) {
 			$fallback = wp_get_attachment_image_url( (int) $settings['og_image'], 'large' );

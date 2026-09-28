@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name:       MTSUAV Social Share
- * Plugin URI:        https://github.com/opsecfreak/mtsuav-social-share
+ * Plugin Name:       Fast Share Buttons
+ * Plugin URI:        https://github.com/opsecfreak/fast-share-buttons
  * Description:       Lightweight social share buttons for X, Facebook, LinkedIn, Pinterest, WhatsApp, Telegram, Reddit, Email and Copy Link. Drag-and-drop ordering, multiple placements, UTM builder, and Open Graph tags. No external requests, no tracking.
  * Version:           1.0.0
  * Requires at least: 6.0
@@ -10,38 +10,38 @@
  * Author URI:        https://mtsuav.com/
  * License:           GPLv2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       mtsuav-social-share
- * Update URI:        https://github.com/opsecfreak/mtsuav-social-share
+ * Text Domain:       fast-share-buttons
+ * Update URI:        https://github.com/opsecfreak/fast-share-buttons
  *
- * @package MTSUAV_Social_Share
+ * @package FSB_Share
  */
 
 defined( 'ABSPATH' ) || exit;
 
 // Updater wiring (shared drop-in, do not modify the file itself).
 require_once __DIR__ . '/includes/class-mtsuav-updater.php';
-MTSUAV_Updater::register( 'mtsuav-social-share', 'opsecfreak/mtsuav-social-share', '1.0.0', __FILE__ );
+MTSUAV_Updater::register( 'fast-share-buttons', 'opsecfreak/fast-share-buttons', '1.0.0', __FILE__ );
 
 // Tip box wiring (shared drop-in, do not modify the file itself).
 require_once __DIR__ . '/includes/class-mtsuav-tip-box.php';
 mtsuav_tip_box_init();
 
-define( 'MTSUAV_SHARE_VERSION', '1.0.0' );
-define( 'MTSUAV_SHARE_OPTION', 'mtsuav_share_settings' );
-define( 'MTSUAV_SHARE_PATH', plugin_dir_path( __FILE__ ) );
-define( 'MTSUAV_SHARE_URL', plugin_dir_url( __FILE__ ) );
+define( 'FAST_SHARE_VERSION', '1.0.0' );
+define( 'FAST_SHARE_OPTION', 'fast_share_settings' );
+define( 'FAST_SHARE_PATH', plugin_dir_path( __FILE__ ) );
+define( 'FAST_SHARE_URL', plugin_dir_url( __FILE__ ) );
 
-require_once MTSUAV_SHARE_PATH . 'includes/class-mtsuav-share-networks.php';
-require_once MTSUAV_SHARE_PATH . 'includes/class-mtsuav-share-render.php';
-require_once MTSUAV_SHARE_PATH . 'includes/class-mtsuav-share-admin.php';
-require_once MTSUAV_SHARE_PATH . 'includes/class-mtsuav-share-opengraph.php';
+require_once FAST_SHARE_PATH . 'includes/class-fast-share-networks.php';
+require_once FAST_SHARE_PATH . 'includes/class-fast-share-render.php';
+require_once FAST_SHARE_PATH . 'includes/class-fast-share-admin.php';
+require_once FAST_SHARE_PATH . 'includes/class-fast-share-opengraph.php';
 
 /**
  * Default settings for the plugin.
  *
  * @return array
  */
-function mtsuav_share_defaults() {
+function fast_share_defaults() {
 	return array(
 		'networks'        => array(
 			'x'        => 1,
@@ -79,12 +79,12 @@ function mtsuav_share_defaults() {
  *
  * @return array
  */
-function mtsuav_share_get_settings() {
-	$stored = get_option( MTSUAV_SHARE_OPTION, array() );
+function fast_share_get_settings() {
+	$stored = get_option( FAST_SHARE_OPTION, array() );
 	if ( ! is_array( $stored ) ) {
 		$stored = array();
 	}
-	return array_merge( mtsuav_share_defaults(), $stored );
+	return array_merge( fast_share_defaults(), $stored );
 }
 
 /**
@@ -92,44 +92,44 @@ function mtsuav_share_get_settings() {
  *
  * @return void
  */
-function mtsuav_share_register_assets() {
+function fast_share_register_assets() {
 	wp_register_style(
-		'mtsuav-share-frontend',
-		MTSUAV_SHARE_URL . 'assets/css/frontend.css',
+		'fast-share-frontend',
+		FAST_SHARE_URL . 'assets/css/frontend.css',
 		array(),
-		MTSUAV_SHARE_VERSION
+		FAST_SHARE_VERSION
 	);
 	wp_register_script(
-		'mtsuav-share-frontend',
-		MTSUAV_SHARE_URL . 'assets/js/frontend.js',
+		'fast-share-frontend',
+		FAST_SHARE_URL . 'assets/js/frontend.js',
 		array(),
-		MTSUAV_SHARE_VERSION,
+		FAST_SHARE_VERSION,
 		true
 	);
 }
-add_action( 'wp_enqueue_scripts', 'mtsuav_share_register_assets' );
+add_action( 'wp_enqueue_scripts', 'fast_share_register_assets' );
 
 /**
  * Register admin assets for the settings screen.
  *
  * @return void
  */
-function mtsuav_share_register_admin_assets() {
+function fast_share_register_admin_assets() {
 	wp_register_style(
-		'mtsuav-share-admin',
-		MTSUAV_SHARE_URL . 'assets/css/admin.css',
+		'fast-share-admin',
+		FAST_SHARE_URL . 'assets/css/admin.css',
 		array(),
-		MTSUAV_SHARE_VERSION
+		FAST_SHARE_VERSION
 	);
 	wp_register_script(
-		'mtsuav-share-admin',
-		MTSUAV_SHARE_URL . 'assets/js/admin.js',
+		'fast-share-admin',
+		FAST_SHARE_URL . 'assets/js/admin.js',
 		array( 'jquery', 'jquery-ui-sortable' ),
-		MTSUAV_SHARE_VERSION,
+		FAST_SHARE_VERSION,
 		true
 	);
 }
-add_action( 'admin_enqueue_scripts', 'mtsuav_share_register_admin_assets' );
+add_action( 'admin_enqueue_scripts', 'fast_share_register_admin_assets' );
 
 /**
  * Enqueue frontend assets. Safe to call at render time; WordPress prints
@@ -137,17 +137,17 @@ add_action( 'admin_enqueue_scripts', 'mtsuav_share_register_admin_assets' );
  *
  * @return void
  */
-function mtsuav_share_enqueue_frontend() {
+function fast_share_enqueue_frontend() {
 	static $done = false;
-	wp_enqueue_style( 'mtsuav-share-frontend' );
-	wp_enqueue_script( 'mtsuav-share-frontend' );
+	wp_enqueue_style( 'fast-share-frontend' );
+	wp_enqueue_script( 'fast-share-frontend' );
 	if ( ! $done ) {
 		wp_localize_script(
-			'mtsuav-share-frontend',
-			'mtsuavShare',
+			'fast-share-frontend',
+			'fastShare',
 			array(
-				'copied' => __( 'Copied!', 'mtsuav-social-share' ),
-				'copy'   => __( 'Copy link', 'mtsuav-social-share' ),
+				'copied' => __( 'Copied!', 'fast-share-buttons' ),
+				'copy'   => __( 'Copy link', 'fast-share-buttons' ),
 			)
 		);
 		$done = true;
@@ -159,14 +159,14 @@ function mtsuav_share_enqueue_frontend() {
  *
  * @return void
  */
-function mtsuav_share_activate() {
-	if ( false === get_option( MTSUAV_SHARE_OPTION, false ) ) {
-		add_option( MTSUAV_SHARE_OPTION, mtsuav_share_defaults() );
+function fast_share_activate() {
+	if ( false === get_option( FAST_SHARE_OPTION, false ) ) {
+		add_option( FAST_SHARE_OPTION, fast_share_defaults() );
 	}
 }
-register_activation_hook( __FILE__, 'mtsuav_share_activate' );
+register_activation_hook( __FILE__, 'fast_share_activate' );
 
 // Boot the modules.
-MTSUAV_Share_Render::init();
-MTSUAV_Share_Admin::init();
-MTSUAV_Share_OpenGraph::init();
+FSB_Share_Render::init();
+FSB_Share_Admin::init();
+FSB_Share_OpenGraph::init();
